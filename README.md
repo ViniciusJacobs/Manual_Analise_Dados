@@ -171,7 +171,7 @@ results.summary()
   <th>Date:</th>             <td>Thu, 23 Sep 2021</td> <th>  Prob (F-statistic):</th> <td>0.000478</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>22:34:43</td>     <th>  Log-Likelihood:    </th> <td> -13.858</td>
+  <th>Time:</th>                 <td>22:48:47</td>     <th>  Log-Likelihood:    </th> <td> -13.858</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>     8</td>      <th>  AIC:               </th> <td>   31.72</td>
