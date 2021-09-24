@@ -1,0 +1,150 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Regressão Linear (Estudo PY e R)
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(tidyverse)
+library(reticulate)
+library(tidymodels)
+
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import statsmodels.api as sm
+```
+
+
+
+
+
+#### **O objetivo desse estudo é abordar:** 
+##### - Os conceitos de Regressão Linear **Simples e Múltipla**;
+##### - Formas de **interpretar** os resultados obtidos;
+##### **- Previsões**; 
+##### - **Pressuspostos** dos modelos; 
+##### - Aplicação prática em **R e Python**. 
+
+##### A técnica da regressão linear possibilita o estudo da relação entre uma ou mais variáveis explicativas que se mostram de forma **linear** e uma variável dependente. 
+
+#### O modelo de regressão linear simples é expresso pela **equação**: 
+$$
+Y = \beta_0 + \beta_1 x + \epsilon
+$$
+
+##### Onde,
+##### Y = variável dependente;
+##### x = variável explicativa;
+$\beta_0$ é o intercepto;   
+
+$\beta_1$ é o coeficiente angular da variável explicativa x;
+
+$\epsilon$ é o termo de erro.
+
+
+### Exemplo inicial(ilustrativo): 
+##### Analisar se existe relação entre o tempo que um veículo leva para frear
+##### Tempo para frear o carro x peso do veículo
+
+```{r}
+df_r <- data.frame('carro' = c('A','B','C','D','F','G','H','I'),
+                 'peso' = c(1200,1880,2500,2000,3000,5000,1500,1200),
+                 'tempo_frear' = c(6,10,12,10,15,20,12,8))
+df_r
+
+```
+
+
+```{python}
+
+df_py = pd.DataFrame({'carro': ['A','B','C','D','F','G','H','I'],
+                   'peso':[1200,1880,2500,2000,3000,5000,1500,1200],
+                   'tempo_frear': [6,10,12,10,15,20,12,8]})
+df_py
+
+```
+
+### Será apresentado de forma alternada mostrar os resultados em Python e R para nao ficar tão repetitivo. 
+
+```{r}
+df_r %>% 
+  ggplot()+
+  aes(tempo_frear, peso)+
+  geom_point()+
+  ylab('Peso do veículo')+
+  xlab('Tempo_Frear')+
+  ggtitle('Relação entre Peso e Tempo para Frear')+
+  theme_bw()
+
+```
+
+
+#### Com a técnica de regressão buscamos a reta que melhor se ajuste a nuvem de pontos, considerando o intercepto e coeficiente angular resultem no menor somatório dos quadrados dos resíduos. (Método de Mínimos Quadrados Ordinários MQO) 
+
+$$
+\sum\limits_{i=1}^{\mbox{n}} (Y - \beta_0 + \beta_1 x + \epsilon)^2 = mín
+$$
+
+##### Ajustando o modelo em R
+```{r}
+modelo_r <- lm(tempo_frear ~ peso, data = df_r)
+modelo_r
+summary(modelo_r)
+```
+
+##### Ajustando o modelo em Python
+```{python}
+x = df_py[['peso']]
+y = df_py[['tempo_frear']]
+modelo_py = LinearRegression()
+
+```
+ 
+```{python}
+# é necessário adicionar uma constante a matriz X
+x_sm = sm.add_constant(x)
+results = sm.OLS(y, x_sm).fit()
+results.summary()
+```
+
+####Dataframe com as predições e coluna de erro
+ 
+```{r}
+
+df_r_com_previsao <- df_r %>% 
+                    mutate(tempo_pred = predict(modelo_r),
+                           erro_abs = abs(tempo_frear-tempo_pred))
+df_r_com_previsao
+
+
+```
+
+
+
+
+
+
+
+
+
